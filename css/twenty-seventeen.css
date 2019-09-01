@@ -254,8 +254,8 @@ ul.products li.product .woocommerce-placeholder {
 ul.products li.product .button {
     -webkit-transition: 1s ease;
     transition: 1s ease;
-    padding: 13px 25px 13px 25px;
-    background: #222;
+    padding: 13px 20px 13px 20px;
+    background: #ee7e16;
     color: #fff;
     font-size: 13px;
     font-weight: 700;
@@ -265,7 +265,7 @@ ul.products li.product .button {
 }
 
 ul.products li.product .button:hover {
-    background: #666
+    background: #f4841c
 }
 
 ul.products li.product .button.loading {
@@ -322,7 +322,11 @@ ul.products li.product .added_to_cart:hover {
     text-transform: uppercase;
     font-weight: 800;
     letter-spacing: .15em;
-    color: #666
+    color: #666;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }
 
 a.remove {
