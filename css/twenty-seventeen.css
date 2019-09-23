@@ -193,7 +193,7 @@
 }
 
 .woocommerce-info {
-    background: #4169e1;
+    background: #ffae16;
     color: #fff
 }
 
@@ -493,9 +493,9 @@ table.variations select {
     margin-bottom: 2em
 }
 
-.woocommerce-tabs li {
-    margin-right: 1em
-}
+/*.woocommerce-tabs li {*/
+    /*margin-right: 1em*/
+/*}*/
 
 .woocommerce-tabs li.active a {
     box-shadow: 0 3px 0 #0f0f0f
@@ -728,31 +728,35 @@ table.variations select {
     padding-right: 1em
 }
 
-.woocommerce-account .woocommerce-MyAccount-navigation li {
-    list-style: none;
-    padding: .5em 0;
-    margin-bottom: 10px;
-    border-bottom: 1px dotted #bbb
+@media screen and (min-width:1024px){
+
+    .woocommerce-account .woocommerce-MyAccount-navigation li {
+        list-style: none;
+        padding: .5em 0;
+        margin-bottom: 10px;
+        border-bottom: 1px dotted #bbb
+    }
+
+    .woocommerce-account .woocommerce-MyAccount-navigation li a {
+        box-shadow: none
+    }
+
+    .woocommerce-account .woocommerce-MyAccount-navigation li a:hover {
+        color: #000;
+    }
+
+    .woocommerce-account .woocommerce-MyAccount-navigation li::before {
+        display: inline-block;
+        margin-right: .25em;
+        color: #ddd
+    }
+
+    .woocommerce-account .woocommerce-MyAccount-navigation li.is-active a {
+        color: #000;
+        font-weight: bolder
+    }
 }
 
-.woocommerce-account .woocommerce-MyAccount-navigation li a {
-    box-shadow: none
-}
-
-.woocommerce-account .woocommerce-MyAccount-navigation li a:hover {
-    color: #000;
-}
-
-.woocommerce-account .woocommerce-MyAccount-navigation li::before {
-    display: inline-block;
-    margin-right: .25em;
-    color: #ddd
-}
-
-.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a {
-    color: #000;
-    font-weight: bolder
-}
 
 .woocommerce-account .woocommerce-MyAccount-content {
     float: left
@@ -763,7 +767,7 @@ table.variations select {
 }
 
 .woocommerce-cart-form img {
-    max-width: 42px;
+    max-width: 75px;
     height: auto;
     display: block
 }
@@ -836,8 +840,8 @@ table.variations select {
     color: #fff;
     height: 40px;
     line-height: 40px;
-    padding: 0 30px;
-    background-color: #222;
+    padding: 0 15px;
+    background-color: #f97f22;
     width: 150px;
     text-align: center;
     font-weight: 700

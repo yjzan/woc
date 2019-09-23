@@ -1105,10 +1105,17 @@ jQuery( function ( $ ) {
 		init: function() {
 			$( '#woocommerce-order-notes' )
 				.on( 'click', 'button.add_note', this.add_order_note )
-				.on( 'click', 'a.delete_note', this.delete_order_note );
+				.on( 'click', 'a.delete_note', this.delete_order_note )
+
+				.on( 'change', 'select.order_note_type', this.change_order_note_type );
 
 		},
 
+        change_order_note_type:function(){
+            $('p#express_tip').hide();
+			$('p#express_tip').show();
+		}
+		,
 		add_order_note: function() {
 			if ( ! $( 'textarea#add_order_note' ).val() ) {
 				return;
