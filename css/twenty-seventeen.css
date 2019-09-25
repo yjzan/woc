@@ -780,9 +780,9 @@ table.variations select {
     margin-bottom: 0
 }
 
-.woocommerce-cart-form .button {
-    padding: 1.2em 2em
-}
+/*.woocommerce-cart-form .button {*/
+    /*padding: 1.2em 2em*/
+/*}*/
 
 .woocommerce-cart-form .actions .input-text {
     width: 130px!important;
@@ -842,9 +842,10 @@ table.variations select {
     line-height: 40px;
     padding: 0 15px;
     background-color: #f97f22;
-    width: 150px;
+    width: 90px;
     text-align: center;
-    font-weight: 700
+    font-weight: 700;
+    border-radius: 3px;
 }
 
 .checkout-button:hover {
