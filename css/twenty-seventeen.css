@@ -117,12 +117,16 @@
 
 .woocommerce-pagination ul.page-numbers {
     padding: 0;
-    display: block
+    display: block;
+    text-align: center;
+}
+.woocommerce-pagination .next.page-numbers,.woocommerce-pagination .prev.page-numbers,.woocommerce-pagination a.page-numbers:not(.current),.woocommerce-pagination span.page-numbers:not(.current)
+{
+    background: #ddd;
 }
 
 .woocommerce-pagination .next.page-numbers,.woocommerce-pagination .prev.page-numbers,.woocommerce-pagination a.page-numbers,.woocommerce-pagination span.page-numbers {
     padding: .5em 1em;
-    background: #ddd;
     display: inline-block;
     font-size: 1em;
     float: none;
@@ -130,10 +134,6 @@
     border-radius: 2px;
     -webkit-transition: background-color ease-in-out .3s;
     transition: background-color ease-in-out .3s
-}
-
-.woocommerce-pagination span.page-numbers {
-    background-color: #fff
 }
 
 .woocommerce-pagination a.page-numbers:hover {
@@ -254,9 +254,8 @@ ul.products li.product .woocommerce-placeholder {
 ul.products li.product .button {
     -webkit-transition: 1s ease;
     transition: 1s ease;
-    padding: 13px 20px 13px 20px;
+    padding: 5px 15px 5px 15px;
     background: #ee7e16;
-    color: #fff;
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 2px;
@@ -288,9 +287,10 @@ ul.products li.product .added_to_cart:hover {
     position: relative;
     height: 1em;
     line-height: 1;
-    font-size: 1em;
+    font-size: 12px;
     width: 5.4em;
-    font-family: star
+    font-family: star;
+    color: #ff8700;
 }
 
 .star-rating::before {
@@ -320,13 +320,14 @@ ul.products li.product .added_to_cart:hover {
 .woocommerce-loop-product__title {
     font-size: 13px;
     text-transform: uppercase;
-    font-weight: 800;
+    font-weight: 400;
     letter-spacing: .15em;
     color: #666;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
+    word-break: break-all;
 }
 
 a.remove {
@@ -560,7 +561,9 @@ table.variations select {
     line-height: 1;
     font-family: WooCommerce;
     content: "\e021";
-    text-indent: 0
+    text-indent: 0;
+    color: #ff8700;
+
 }
 
 .woocommerce-tabs #reviews p.stars a:hover~a::before {
@@ -763,7 +766,7 @@ table.variations select {
 }
 
 .woocommerce-cart-form td {
-    padding: 1em .5em
+    padding: 1em .8em
 }
 
 .woocommerce-cart-form img {

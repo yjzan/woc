@@ -74,7 +74,6 @@ jQuery( function( $ ) {
     }
 
     function quantity() {
-        console.log(123);
         var _selector ='.variations_form.cart,.woocommerce-cart-form,.cart';
 
         var j_quick_view = jQuery(_selector),
