@@ -6,7 +6,7 @@ jQuery( function( $ ) {
         return false;
     }
 
-	/* Storage Handling */
+    /* Storage Handling */
     var $supports_html5_storage = true,
         cart_hash_key           = wc_cart_fragments_params.cart_hash_key;
 
@@ -20,7 +20,7 @@ jQuery( function( $ ) {
         $supports_html5_storage = false;
     }
 
-	/* Cart session creation time to base expiration on */
+    /* Cart session creation time to base expiration on */
     function set_cart_creation_timestamp() {
         if ( $supports_html5_storage ) {
             sessionStorage.setItem( 'wc_cart_created', ( new Date() ).getTime() );
@@ -67,7 +67,7 @@ jQuery( function( $ ) {
         }
     };
 
-	/* Named callback for refreshing cart fragment */
+    /* Named callback for refreshing cart fragment */
     function refresh_cart_fragment() {
         $.ajax( $fragment_refresh );
 
@@ -84,7 +84,10 @@ jQuery( function( $ ) {
 
         var _qty_btn = j_quick_view.find('.modify-qty');
 
-        jQuery(_qty_btn).on('click', function () {
+        jQuery(_qty_btn).off('click').on('click', function () {
+            cart_clicking++;
+            var check_click_value = cart_clicking;
+
             var t = jQuery(this),
                 _input = t.parent().find('input'),
                 currVal = parseInt(_input.val(), 10),
@@ -99,11 +102,84 @@ jQuery( function( $ ) {
                 _input.val(currVal + 1);
             }
 
+
+            if(t.parent().hasClass('yjz-cart-item-input'))
+            {
+                var cart_item_price = parseInt(t.parent().attr('data-cart-price'));
+                var amount = $('#yjz_cart_subtotal .woocommerce-Price-amount').html();
+                amount = amount.split('</span>');
+                amount[1] = parseFloat(amount[1].replace(/,/g,""));
+                var new_price;
+                var new_counter = parseInt($('.yjzan-button-icon').attr('data-counter'));
+                if('plus' === t.attr('data-click'))
+                {
+                    new_price  =  amount[1] + cart_item_price;
+                    new_counter = new_counter+1;
+                }
+                else
+                {
+                    if('minus' === t.attr('data-click') && currVal ==1 )
+                    {
+                        t.parent().parent().parent().hide();
+                    }
+                    new_price  =  amount[1] - cart_item_price;
+                    new_counter = new_counter-1>0?(new_counter-1):0;
+
+                }
+                new_price = new_price.toFixed(2);
+
+                $('#yjz_cart_subtotal .woocommerce-Price-amount').html(amount[0]+'</span>'+new_price);
+                $('.yjzan-button-icon').attr('data-counter',new_counter);
+
+            }
+
+            setTimeout(function(){
+                if(check_click_value==cart_clicking)
+                    cart_clicking = 0;
+            },300);
+
+            setTimeout(function() {
+                if (cart_clicking == 0 && t.parent().hasClass('yjz-cart-item-input'))
+                {
+                    var number = 'minus' === t.attr('data-click') && currVal ==1 ? 0:_input.val();
+                    setCartItemQuantity(t.parent(),parseInt(number, 10));
+                    cart_clicking=0;
+                }
+            },500);
+
             jQuery('[name=\'update_cart\']').prop('disabled', false);
         });
     };
 
-	/* Cart Handling */
+    var cart_clicking=0;
+    function setCartItemQuantity(obj,item_num) {
+        var item_key = $(obj).attr('data-cart-key');
+        var variation_id= $(obj).attr('data-variation-id');
+        var product_id= $(obj).attr('data-product-id');
+        var iteem_price = $(obj).attr('data-cart-price');
+
+        $.post(site_url+ "/wp-admin/admin-ajax.php",
+            "action=set_cart_quantity&product_id="+product_id+"&quantity="+item_num+"&variation_id="+variation_id+"&cart_item_key="+item_key
+        ).done(function( data ) {
+            if (data.status==1) {
+                if(item_num==0)
+                    $(obj).parent().parent().remove();
+
+                //修改金额总数
+                var amount = $('#yjz_cart_subtotal .woocommerce-Price-amount').html();
+                amount = amount.split('</span>');
+                $('#yjz_cart_subtotal .woocommerce-Price-amount').html(amount[0]+'</span>'+data.subtotal);
+                //修改购物车数量
+
+                $('.yjzan-button-icon').attr('data-counter',data.item_quantity);
+            }
+            jQuery.data(document.body, "processing", 0);
+            yjzSendInfo('成功修改');
+        });
+
+    }
+
+    /* Cart Handling */
     if ( $supports_html5_storage ) {
 
         var cart_timeout = null,
@@ -192,7 +268,7 @@ jQuery( function( $ ) {
         refresh_cart_fragment();
     }
 
-	/* Cart Hiding */
+    /* Cart Hiding */
     if ( Cookies.get( 'woocommerce_items_in_cart' ) > 0 ) {
         $( '.hide_cart_widget_if_empty' ).closest( '.widget_shopping_cart' ).show();
     } else {
