@@ -600,7 +600,7 @@ jQuery( function( $ ) {
         //
         // // When a file is selected, run a callback.
         product_video_frame.on('insert select', function(){
-            alert(123)
+            alert('功能待升级')
         });
     });
 

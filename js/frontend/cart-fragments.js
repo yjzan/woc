@@ -85,6 +85,7 @@ jQuery( function( $ ) {
         var _qty_btn = j_quick_view.find('.modify-qty');
 
         jQuery(_qty_btn).off('click').on('click', function () {
+
             cart_clicking++;
             var check_click_value = cart_clicking;
 
@@ -152,12 +153,33 @@ jQuery( function( $ ) {
     };
 
     var cart_clicking=0;
+
+    function yjzSendInfo(msg)
+    {
+
+        if($(".noticejs").length>0)
+            return;
+
+        new NoticeJs({
+            text: msg,
+            position: "topCenter",
+            type:"success",
+            progressBar:true,
+            modal: false,
+            timeout: 20,
+            animation: {
+                open: 0,
+                close: 0
+            }
+        }).show();
+
+    }
+
     function setCartItemQuantity(obj,item_num) {
         var item_key = $(obj).attr('data-cart-key');
         var variation_id= $(obj).attr('data-variation-id');
         var product_id= $(obj).attr('data-product-id');
         var iteem_price = $(obj).attr('data-cart-price');
-
         $.post(site_url+ "/wp-admin/admin-ajax.php",
             "action=set_cart_quantity&product_id="+product_id+"&quantity="+item_num+"&variation_id="+variation_id+"&cart_item_key="+item_key
         ).done(function( data ) {
@@ -169,12 +191,39 @@ jQuery( function( $ ) {
                 var amount = $('#yjz_cart_subtotal .woocommerce-Price-amount').html();
                 amount = amount.split('</span>');
                 $('#yjz_cart_subtotal .woocommerce-Price-amount').html(amount[0]+'</span>'+data.subtotal);
-                //修改购物车数量
 
                 $('.yjzan-button-icon').attr('data-counter',data.item_quantity);
+                if(data.item_quantity==0){
+                    $('#yjz_cart_subtotal').hide();
+                    $(".woocommerce-mini-cart__empty-message").show();
+                }
+
+                //存在父窗口同步更新父窗口的数据
+                if(window.top!=window.self)
+                {
+                    var target = "[data-cart-key='"+item_key+"'].yjz-cart-item-input";
+                    if(item_num==0)
+                    {
+                        $(obj,parent.document).parent().parent().remove();
+                        $(target,parent.document).parent().parent().remove();
+                    }
+                    else
+                    {
+                        $(target,parent.document).find('.input-text').val(item_num);
+                    }
+
+                    $('#yjz_cart_subtotal .woocommerce-Price-amount',parent.document).html(amount[0]+'</span>'+data.subtotal);
+                    $('.yjzan-button-icon',parent.document).attr('data-counter',data.item_quantity);
+                    if(data.item_quantity==0){
+                        $('#yjz_cart_subtotal',parent.document).hide();
+                        $(".woocommerce-mini-cart__empty-message",parent.document).show();
+                    }
+
+
+
+                }
             }
-            jQuery.data(document.body, "processing", 0);
-            yjzSendInfo('成功修改');
+
         });
 
     }
