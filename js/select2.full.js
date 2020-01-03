@@ -4498,7 +4498,7 @@ S2.define('select2/i18n/en',[],function () {
       return message;
     },
     noResults: function () {
-      return 'No results found';
+      return '暂无可选数据';
     },
     searching: function () {
       return 'Searching…';
