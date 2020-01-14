@@ -263,7 +263,6 @@
         jQuery(_qty_btn).off('click').on('click', function () {
             cart_clicking++;
             var check_click_value = cart_clicking;
-            console.log('正在输入');
             var t = jQuery(this),
                 _input = t.parent().find('input'),
                 currVal = parseInt(_input.val(), 10),
@@ -369,6 +368,13 @@
     setTimeout(function(){
         quantity();
     },200);
+
+
+
+
+
+
+
 
 
     $('.yjz-yd-header-licon').on('click', function (){
@@ -1098,6 +1104,9 @@
         }
 
     });
+
+
+
 
 
 

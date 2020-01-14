@@ -73,6 +73,11 @@ jQuery( function( $ ) {
 
     }
 
+    jQuery(".remove-cart-item").on("click", function () {
+        setCartItemQuantity(this,0);
+        $(this).parent().parent().remove();
+    });
+
     function quantity() {
         var _selector ='.variations_form.cart,.woocommerce-cart-form,.cart';
 
@@ -83,6 +88,8 @@ jQuery( function( $ ) {
         _qty.prepend('<span class=\'modify-qty\' data-click=\'minus\'>-</span>').append('<span class=\'modify-qty\' data-click=\'plus\'>+</span>');
 
         var _qty_btn = j_quick_view.find('.modify-qty');
+
+
 
         jQuery(_qty_btn).off('click').on('click', function () {
 
@@ -196,6 +203,9 @@ jQuery( function( $ ) {
                 if(data.item_quantity==0){
                     $('#yjz_cart_subtotal').hide();
                     $(".woocommerce-mini-cart__empty-message").show();
+                    $(".yjzan-menu-cart__footer-buttons").hide();
+                }else{
+                    $(".yjzan-menu-cart__footer-buttons").show();
                 }
 
                 //存在父窗口同步更新父窗口的数据
@@ -217,9 +227,10 @@ jQuery( function( $ ) {
                     if(data.item_quantity==0){
                         $('#yjz_cart_subtotal',parent.document).hide();
                         $(".woocommerce-mini-cart__empty-message",parent.document).show();
+                        $(".yjzan-menu-cart__footer-buttons").hide();
+                    }else{
+                        $(".yjzan-menu-cart__footer-buttons").show();
                     }
-
-
 
                 }
             }
@@ -341,4 +352,7 @@ jQuery( function( $ ) {
             refresh_cart_fragment();
         } );
     }
+
+
+
 });
