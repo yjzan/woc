@@ -35,40 +35,39 @@ jQuery( function( $ ) {
         }
     }
 
-    var $fragment_refresh = {
-        url: wc_cart_fragments_params.wc_ajax_url.toString().replace( '%%endpoint%%', 'get_refreshed_fragments' ),
-        type: 'POST',
-        data: {
-            time: new Date().getTime()
-        },
-        timeout: wc_cart_fragments_params.request_timeout,
-        success: function( data ) {
-            if ( data && data.fragments ) {
-
-                $.each( data.fragments, function( key, value ) {
-                    $( key ).replaceWith( value );
-                });
-
-                if ( $supports_html5_storage ) {
-                    sessionStorage.setItem( wc_cart_fragments_params.fragment_name, JSON.stringify( data.fragments ) );
-                    set_cart_hash( data.cart_hash );
-
-                    if ( data.cart_hash ) {
-                        set_cart_creation_timestamp();
-                    }
-                }
-
-                $( document.body ).trigger( 'wc_fragments_refreshed' );
-                quantity();
-            }
-        },
-        error: function() {
-            $( document.body ).trigger( 'wc_fragments_ajax_error' );
-        }
-    };
-
     /* Named callback for refreshing cart fragment */
     function refresh_cart_fragment() {
+        var $fragment_refresh = {
+            url: wc_cart_fragments_params.wc_ajax_url.toString().replace( '%%endpoint%%', 'get_refreshed_fragments' ),
+            type: 'POST',
+            data: {
+                time: new Date().getTime()
+            },
+            timeout: wc_cart_fragments_params.request_timeout,
+            success: function( data ) {
+                if ( data && data.fragments ) {
+
+                    $.each( data.fragments, function( key, value ) {
+                        $( key ).replaceWith( value );
+                    });
+
+                    if ( $supports_html5_storage ) {
+                        sessionStorage.setItem( wc_cart_fragments_params.fragment_name, JSON.stringify( data.fragments ) );
+                        set_cart_hash( data.cart_hash );
+
+                        if ( data.cart_hash ) {
+                            set_cart_creation_timestamp();
+                        }
+                    }
+
+                    $( document.body ).trigger( 'wc_fragments_refreshed' );
+                    quantity();
+                }
+            },
+            error: function() {
+                $( document.body ).trigger( 'wc_fragments_ajax_error' );
+            }
+        };
         $.ajax( $fragment_refresh );
 
     }
@@ -352,7 +351,5 @@ jQuery( function( $ ) {
             refresh_cart_fragment();
         } );
     }
-
-
 
 });
