@@ -12,7 +12,6 @@ jQuery( function( $ ) {
 		$( document.body )
 			.on( 'click', '.add_to_cart_button', this.onAddToCart )
 			.on( 'click', '.remove_from_cart_button', this.onRemoveFromCart )
-			.on( 'added_to_cart', this.updateButton )
 			.on( 'added_to_cart', this.updateCartPage )
 			.on( 'added_to_cart removed_from_cart', this.updateFragments );
 	};
@@ -96,22 +95,22 @@ jQuery( function( $ ) {
 	/**
 	 * Update cart page elements after add to cart events.
 	 */
-	AddToCartHandler.prototype.updateButton = function( e, fragments, cart_hash, $button ) {
-		$button = typeof $button === 'undefined' ? false : $button;
-
-		if ( $button ) {
-			$button.removeClass( 'loading' );
-			$button.addClass( 'added' );
-
-			// View cart text.
-			if ( ! wc_add_to_cart_params.is_cart && $button.parent().find( '.added_to_cart' ).length === 0 ) {
-				$button.after( ' <a href="' + wc_add_to_cart_params.cart_url + '" class="added_to_cart wc-forward" title="' +
-					wc_add_to_cart_params.i18n_view_cart + '">' + wc_add_to_cart_params.i18n_view_cart + '</a>' );
-			}
-
-			$( document.body ).trigger( 'wc_cart_button_updated', [ $button ] );
-		}
-	};
+	// AddToCartHandler.prototype.updateButton = function( e, fragments, cart_hash, $button ) {
+	// 	$button = typeof $button === 'undefined' ? false : $button;
+    //
+	// 	if ( $button ) {
+	// 		$button.removeClass( 'loading' );
+	// 		$button.addClass( 'added' );
+    //
+	// 		// View cart text.
+	// 		if ( ! wc_add_to_cart_params.is_cart && $button.parent().find( '.added_to_cart' ).length === 0 ) {
+	// 			$button.after( ' <a href="' + wc_add_to_cart_params.cart_url + '" class="added_to_cart wc-forward" title="' +
+	// 				wc_add_to_cart_params.i18n_view_cart + '">' + wc_add_to_cart_params.i18n_view_cart + '</a>' );
+	// 		}
+    //
+	// 		$( document.body ).trigger( 'wc_cart_button_updated', [ $button ] );
+	// 	}
+	// };
 
 	/**
 	 * Update cart page elements after add to cart events.
