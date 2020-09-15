@@ -8,7 +8,7 @@ jQuery( function ( $ ) {
         states: null,
         init: function() {
             if ( ! ( typeof woocommerce_admin_meta_boxes_order === 'undefined' || typeof woocommerce_admin_meta_boxes_order.countries === 'undefined' ) ) {
-				/* State/Country select boxes */
+                /* State/Country select boxes */
                 this.states = $.parseJSON( woocommerce_admin_meta_boxes_order.countries.replace( /&quot;/g, '"' ) );
             }
 
@@ -1108,19 +1108,41 @@ jQuery( function ( $ ) {
                 .on( 'click', 'a.delete_note', this.delete_order_note )
                 .on( 'change', '#order_note_type', this.change_order_note_type )
                 .on( 'click', '.btn_hide_express_mask_layer', this.hide_express_mask_layer )
-                .on( 'click', 'span.express_no', function(){
-                    //console.log($(this).data('expressno'));
-                    $('.express_mask_layer').show();
+                .on( 'click', 'span.express_no', this.express_no_click);
 
-                    if($("#express_iframe").attr("src")!="https://www.kdniao.com/JSInvoke/MSearchTrackDetail.aspx?ExpNo="+$(this).data('expressno'))
-                    {
-                        $("#express_iframe").attr("src", "https://www.kdniao.com/JSInvoke/MSearchTrackDetail.aspx?ExpNo="+$(this).data('expressno'));
-                    }
+            //设置初始快递效果
+            if($('#order_note_type').val()=="express")
+            {
+                $('p#express_tip').show();
+                $('.yjz_exp_code').show();
+            }
 
-                    $(".order_notes").hide();
-                    $(".add_note").hide();
+        }
+        ,express_no_click:function()
+        {
+            debugger;
+            $('.express_mask_layer').show();
+            $('#express_icon_loading').show();
+            $("#yjz_express_info").html('<center>快递信息加载中...</center>');
+
+            var expressno = $(this).data('expressno');
+            var expcode = $(this).data('expcode');
+            var ep_key = 'expressno_' + expcode + expressno;
+            if(sessionStorage.getItem(ep_key))
+            {
+                $("#yjz_express_info").html(sessionStorage.getItem(ep_key));
+                $('#express_icon_loading').hide();
+            }
+            else
+            {
+                $.get("/yjzexpress.php?expCode="+$(this).data('expcode')+"&expNo="+expressno.trim(), function(result){
+                    $("#yjz_express_info").html(result);
+                    $('#express_icon_loading').hide();
+                    sessionStorage.setItem( ep_key, result );
                 });
-
+            }
+            $(".order_notes").hide();
+            $(".add_note").hide();
         }
         ,
         hide_express_mask_layer:function(){
@@ -1134,10 +1156,11 @@ jQuery( function ( $ ) {
             if($('#order_note_type').val()=="express")
             {
                 $('p#express_tip').show();
-                //$('#add_order_note').attr('placeholder',"格式如:申通快递 123456789");
+                $('.yjz_exp_code').show();
             }else
             {
                 $('p#express_tip').hide();
+                $('.yjz_exp_code').hide();
             }
         }
         ,
@@ -1159,6 +1182,8 @@ jQuery( function ( $ ) {
                 post_id:   woocommerce_admin_meta_boxes.post_id,
                 note:      $( 'textarea#add_order_note' ).val(),
                 note_type: $( 'select#order_note_type' ).val(),
+                exp_code: $( 'select#yjz_exp_code' ).val(),
+                exp_code_text: $( 'select#yjz_exp_code' ).find("option:selected").text(),
                 security:  woocommerce_admin_meta_boxes.add_order_note_nonce
             };
 
